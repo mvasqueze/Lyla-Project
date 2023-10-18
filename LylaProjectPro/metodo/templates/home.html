@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <form action="">
+        <div class="mb-3">
+          <label for="searchMethod" class="form-label">Search for a method</label>
+          <input type="text" class="form-control" name="searchMethod" aria-describedby="methodHelp">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+      <p>Searching for {{searchTerm}}</p>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for metodo in metodos %}
+        <div v-for="metodo in metodos" class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">{{ metodo.title}}</h5> 
+              <p class="card-text">{{metodo.description}}</p>
+              {% if metodo.url %}
+                <a href="{{ metodo.url}}" class="btn btn-primary">Link al método de {{metodo.title}}</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+</div>
+{% endblock content %}
