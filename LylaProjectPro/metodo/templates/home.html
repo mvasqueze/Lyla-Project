@@ -14,7 +14,9 @@
         <div v-for="metodo in metodos" class="col">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title fw-bold">{{ metodo.title}}</h5> 
+              <a href="{% url 'detail' metodo.id %}">
+                <h5 class="card-title fw-bold">{{ metodo.title}}</h5> 
+              </a>
               <p class="card-text">{{metodo.description}}</p>
               {% if metodo.url %}
                 <a href="{{ metodo.url}}" class="btn btn-primary">Link al método de {{metodo.title}}</a>
