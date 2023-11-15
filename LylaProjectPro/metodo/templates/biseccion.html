@@ -1,0 +1,56 @@
+{% extends 'base2.html' %}
+{% block content %}
+<div class="card mb-3">
+    <div class="row g-0">
+        <div>
+            <div class="card-body">
+                <h5 class="card-title">Bisección</h5>
+                {% if error %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    {{ error }}
+                </div>
+                {% endif %}
+                <p class="card-text">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">
+                            Calcular
+                        </button>
+                    </form>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if resultados_tabla %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Resultados de la Bisección</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>N</th>
+                        <th>a</th>
+                        <th>xn</th>
+                        <th>b</th>
+                        <th>fm</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in resultados_tabla %}
+                    <tr>
+                        {% for item in row %}
+                        <td>{{ item }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>{{ resultado_final }}</p>
+        </div>
+    </div>
+{% endif %}
+{% endblock content %}
