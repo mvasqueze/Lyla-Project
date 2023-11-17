@@ -41,16 +41,22 @@
                 </thead>
                 <tbody>
                     {% for row in resultados_tabla %}
-                    <tr>
-                        {% for item in row %}
-                        <td>{{ item }}</td>
-                        {% endfor %}
-                    </tr>
+                        <tr>
+                            {% for item in row %}
+                                <td>{{ item }}</td>
+                            {% endfor %}
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <p>{{ resultado_final }}</p>
+            {% if resultado_final %}
+                <div class="mt-3">
+                    <h6>Resultado Final:</h6>
+                    <p>{{ resultado_final }}</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endif %}
+
 {% endblock content %}

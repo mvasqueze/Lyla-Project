@@ -1,0 +1,24 @@
+{% extends 'base2.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graficador de Funciones</title>
+</head>
+<body>
+    <h1>Graficador de Funciones</h1>
+
+    {% if imagen_grafico %}
+        <img src="data:image/png;base64,{{ imagen_grafico }}" alt="Gráfico de la función">
+    {% else %}
+        <h2>Ingrese la función:</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="funcion">Función:</label>
+            <input type="text" id="funcion" name="funcion" required>
+            <button type="submit">Graficar</button>
+        </form>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

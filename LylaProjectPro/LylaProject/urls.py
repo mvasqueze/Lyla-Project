@@ -24,4 +24,5 @@ urlpatterns = [
     path('about/', metodoViews.about, name='about'),
     path('signup/', metodoViews.signup, name='signup'),
     path('metodo/', include('metodo.urls')),
+    path('graficador/', include('graficador.urls')),
 ]
