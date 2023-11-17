@@ -6,27 +6,39 @@
     <title>Graficador de Funciones</title>
 </head>
 <body>
-    <h1>Graficador de Funciones</h1>
-
-    {% if imagen_grafico %}
-        <h2>Ingrese la función:</h2>
-        <form method="post">
-            {% csrf_token %}
-            <label for="funcion">Función:</label>
-            <input type="text" id="funcion" name="funcion" required>
-            <button type="submit">Graficar</button>
-        </form>
-        <img src="data:image/png;base64,{{ imagen_grafico }}" alt="Gráfico de la función">
-    {% else %}
-        <h2>Ingrese la función:</h2>
-        <form method="post">
-            {% csrf_token %}
-            <label for="funcion1">Función:</label>
-            <input type="text" id="funcion" name="funcion" required>
-            <button type="submit">Graficar</button>
-        </form>
-    {% endif %}
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Graficador de Funciones</h1>
+            {% if imagen_grafico %}
+                <h2>Ingrese la función:</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="funcion">Función:</label>
+                    <input type="text" id="funcion" name="funcion" required>
+                    <button type="submit">Graficar</button>
+                </form>
+                <img src="data:image/png;base64,{{ imagen_grafico }}" alt="Gráfico de la función">
+            {% else %}
+                <h2>Ingrese la función:</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="funcion1">Función:</label>
+                    <input type="text" id="funcion" name="funcion" required>
+                    <button type="submit">Graficar</button>
+                </form>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">¡Cuidado con el formato de las funciones!</h5>
+                    <p class="card-text">Esta página solo recibe funciones escritas de una forma compatible con Python y, concretamente, con la librería Math. Por ejemplo, la función log(sin(x)^2 + 1)-(1/2) debe ser introducida como math.log(math.sin(x)**2 + 1) - (1/2).
+                        Si la página no carga, por favor verifica que la función esté escrita de forma correcta.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 {% endblock %}
-
+                 
