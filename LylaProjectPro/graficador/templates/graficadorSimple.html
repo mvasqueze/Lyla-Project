@@ -15,9 +15,6 @@
             <label for="funcion">Función:</label>
             <input type="text" id="funcion" name="funcion" required>
             <button type="submit">Graficar</button>
-            <a href="{% url 'graficadorSimple' %}" class="btn btn-primary">
-                Graficar otra función
-            </a>
         </form>
         <img src="data:image/png;base64,{{ imagen_grafico }}" alt="Gráfico de la función">
     {% else %}
@@ -27,26 +24,8 @@
             <label for="funcion1">Función:</label>
             <input type="text" id="funcion" name="funcion" required>
             <button type="submit">Graficar</button>
-            <a href="{% url 'graficadorSimple' %}" class="btn btn-primary">
-                Graficar otra función
-            </a>
         </form>
     {% endif %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Obtener el valor del parámetro 'parametro' de la URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const parametro = urlParams.get('funcion');
-    
-            // Obtener el campo de entrada del formulario
-            const fun = document.getElementById('funcion');
-    
-            // Llenar automáticamente el campo con el valor del parámetro de la URL
-            if (parametro !== null) {
-                fun.value = parametro;
-            }
-        });
-    </script>
 </body>
 </html>
 {% endblock %}
