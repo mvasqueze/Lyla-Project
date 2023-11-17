@@ -5,7 +5,7 @@ import io
 import urllib, base64
 import math
 
-def graficador(request):
+def graficadorSimple(request):
     imagen_grafico = None
     error = None
 
@@ -46,3 +46,45 @@ def graficador(request):
                 print(error)
 
     return render(request, 'graficador.html', {'imagen_grafico': imagen_grafico, 'error': error})
+
+def graficador(request, funcion):
+    print('esta es la función: ')
+    funcion1 = request.GET.get('funcion')
+    print(funcion1)
+    
+    imagen_grafico = None
+    error = None
+    
+    # Graficar la función
+    if funcion1:
+        try:
+            x = np.linspace(-10, 10, 1000) 
+            y = np.empty_like(x)
+            # Evaluate the expression for each x value
+            for i, x_val in enumerate(x):
+                # Use eval with a dictionary to allow math functions within the eval context
+                y[i] = eval(funcion1, {'__builtins__': None}, {'x': x_val, 'math': math})
+            # Evaluate the function to generate y values
+            print('B: ')
+            print(y)
+
+            plt.figure(figsize=(8, 6))
+            plt.plot(x, y)
+            plt.xlabel('x')
+            plt.ylabel('f(x)')
+            plt.title('Gráfico de la función: ' + funcion1)
+            plt.grid(True)
+
+            # Convert the plot to an image to display on the page
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+            imagen_grafico = base64.b64encode(buffer.getvalue()).decode('utf-8')
+            plt.close()
+
+        except Exception as e:
+            # Handle errors when evaluating the function
+            error = f"Error al evaluar la función: {e}"
+            print(error)
+
+    return render(request, 'graficador.html', {'imagen_grafico': imagen_grafico, 'error': error, 'funcion1':funcion1})

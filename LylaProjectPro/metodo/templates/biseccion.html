@@ -14,9 +14,15 @@
                     <form method="POST">
                         {% csrf_token %}
                         {{ form.as_p }}
+                        <p>
+                            {{form.f.value}}
+                        </p>
                         <button type="submit" class="btn btn-primary">
                             Calcular
                         </button>
+                        <a href="{% url 'graficador' form.f.value %}" class="btn btn-primary">
+                            Graficar función
+                        </a>
                     </form>
                 </p>
             </div>

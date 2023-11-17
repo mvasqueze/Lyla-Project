@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.graficador, name='graficador'),
+    path('', views.graficadorSimple, name='graficador'),
+    path('<path:funcion>', views.graficador, name='graficador'),
 ]
