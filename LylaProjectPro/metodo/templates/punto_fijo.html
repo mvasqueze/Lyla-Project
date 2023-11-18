@@ -4,7 +4,7 @@
     <div class="col-md-8">
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title">Regla falsa</h5>
+                <h5 class="card-title">Punto fijo</h5>
                 {% if error %}
                 <div class="alert alert-danger mt-3" role="alert">
                     {{ error }}
@@ -20,8 +20,8 @@
                         <button type="submit" class="btn btn-primary">
                             Calcular
                         </button>
-                        <a href="{% url 'graficador' form.f.value %}" class="btn btn-primary">
-                            Graficar función
+                        <a href="{% url 'graficadorSimple' %}" class="btn btn-primary">
+                            Ir al graficador
                         </a>
                     </form>
                 </p>
@@ -44,15 +44,14 @@
 {% if resultados_tabla %}
     <div class="card mt-3">
         <div class="card-body">
-            <h5 class="card-title">Resultados de la Regla Falsa</h5>
+            <h5 class="card-title">Resultados de Punto fijo</h5>
             <table class="table">
                 <thead>
                     <tr>
                         <th>N</th>
-                        <th>xinf</th>
-                        <th>xsup</th>
-                        <th>xm</th>
-                        <th>fxm</th>
+                        <th>xn</th>
+                        <th>fm</th>
+                        <th>gm</th>
                         <th>Error</th>
                     </tr>
                 </thead>

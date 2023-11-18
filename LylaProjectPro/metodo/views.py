@@ -82,3 +82,31 @@ def regla_falsa(request):
         print('AAAA ESTE NO ES EL RESULTADO AAAAA')
 
     return render(request, 'regla_falsa.html', {'form': form})
+
+def punto_fijo(request):
+    if request.method == 'POST':
+        form = forms.PuntoFijoForm(request.POST)
+        if form.is_valid():
+            f = form.cleaned_data['f']
+            g = form.cleaned_data['g']
+            x0 = form.cleaned_data['x0']
+            tol = form.cleaned_data['tol']
+            niter = form.cleaned_data['niter']
+
+            #def punto_fijo(f, g, x0, tol, niter):
+            resultados_tabla, resultado_final = metodos.punto_fijo(f, g, x0, tol, niter)
+            print('AAAA ESTE SÍ ES EL RESULTADO AAAAA')
+            print(resultados_tabla)
+            print('AAAA ESTE SÍ ES EL RESULTADO AAAAA')
+            print(resultado_final)
+            # Pasar los resultados a la plantilla para mostrar la tabla
+            return render(request, 'punto_fijo.html', {
+                'form': form,
+                'resultados_tabla': resultados_tabla,
+                'resultado_final': resultado_final
+            })
+    else:
+        form = forms.PuntoFijoForm()
+        print('AAAA ESTE NO ES EL RESULTADO AAAAA')
+
+    return render(request, 'punto_fijo.html', {'form': form})
