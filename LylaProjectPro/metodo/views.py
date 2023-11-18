@@ -138,3 +138,31 @@ def newton(request):
         print('AAAA ESTE NO ES EL RESULTADO AAAAA')
 
     return render(request, 'newton.html', {'form': form})
+
+def secante(request):
+    if request.method == 'POST':
+        form = forms.SecanteForm(request.POST)
+        if form.is_valid():
+            f = form.cleaned_data['f']
+            x0 = form.cleaned_data['x0']
+            x1 = form.cleaned_data['x1']
+            tol = form.cleaned_data['tol']
+            niter = form.cleaned_data['niter']
+
+            #def secante(x0, x1, f, tol, niter)
+            resultados_tabla, resultado_final = metodos.secante(x0, x1, f, tol, niter)
+            print('AAAA ESTE SÍ ES EL RESULTADO AAAAA')
+            print(resultados_tabla)
+            print('AAAA ESTE SÍ ES EL RESULTADO AAAAA')
+            print(resultado_final)
+            # Pasar los resultados a la plantilla para mostrar la tabla
+            return render(request, 'secante.html', {
+                'form': form,
+                'resultados_tabla': resultados_tabla,
+                'resultado_final': resultado_final
+            })
+    else:
+        form = forms.SecanteForm()
+        print('AAAA ESTE NO ES EL RESULTADO AAAAA')
+
+    return render(request, 'secante.html', {'form': form})

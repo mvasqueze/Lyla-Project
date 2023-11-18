@@ -108,3 +108,31 @@ class NewtonForm(forms.Form):
         # Aquí podrías realizar otras validaciones si es necesario
 
         return cleaned_data
+    
+#def secante(x0, x1, f, tol, niter)
+class SecanteForm(forms.Form):
+    f = forms.CharField(label='Función f(x)')
+    x0 = forms.FloatField(label='Valor inicial x0')
+    x1 = forms.FloatField(label='Valor x1')
+    tol = forms.FloatField(label='Tolerancia')
+    niter = forms.IntegerField(label='Número de iteraciones')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        x0 = cleaned_data.get('x0')
+        x1 = cleaned_data.get('x1')
+        tol = cleaned_data.get('tol')
+        niter = cleaned_data.get('niter')
+
+        if x0 >= x1:
+            raise forms.ValidationError('El valor inicial x0 debe ser menor que x1')
+        
+        if tol <= 0:
+            raise forms.ValidationError('La tolerancia debe ser mayor que cero')
+
+        if niter <= 0:
+            raise forms.ValidationError('El número de iteraciones debe ser mayor que cero')
+
+        # Aquí podrías realizar otras validaciones si es necesario
+
+        return cleaned_data
