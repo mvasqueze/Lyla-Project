@@ -52,3 +52,33 @@ def biseccion(request):
         print('AAAA ESTE NO ES EL RESULTADO AAAAA')
 
     return render(request, 'biseccion.html', {'form': form})
+
+def regla_falsa(request):
+    if request.method == 'POST':
+        form = forms.ReglaFalsaForm(request.POST)
+        if form.is_valid():
+            f = form.cleaned_data['f']
+            xi = form.cleaned_data['xi']
+            xs = form.cleaned_data['xs']
+            t_error = form.cleaned_data['t_error']
+            tol = form.cleaned_data['tol']
+            niter = form.cleaned_data['niter']
+            print('ENTRA AL IF')
+            #regla_falsa(f,t_error,xinf,xsup,tol,niter)
+            resultados_tabla, resultado_final = metodos.regla_falsa(f, t_error, xi, xs, tol, niter)
+            print('TIPO DE ERROR:')
+            print(t_error)
+            print(resultados_tabla)
+            print('AAAA ESTE SÍ ES EL RESULTADO AAAAA')
+            print(resultado_final)
+            # Pasar los resultados a la plantilla para mostrar la tabla
+            return render(request, 'regla_falsa.html', {
+                'form': form,
+                'resultados_tabla': resultados_tabla,
+                'resultado_final': resultado_final
+            })
+    else:
+        form = forms.ReglaFalsaForm()
+        print('AAAA ESTE NO ES EL RESULTADO AAAAA')
+
+    return render(request, 'regla_falsa.html', {'form': form})
