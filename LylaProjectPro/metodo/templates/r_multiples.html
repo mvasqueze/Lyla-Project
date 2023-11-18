@@ -1,0 +1,76 @@
+{% extends 'base2.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Raíces multiples</h5>
+                {% if error %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    {{ error }}
+                </div>
+                {% endif %}
+                <p class="card-text">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <p>
+                            {{form.f.value}}
+                        </p>
+                        <button type="submit" class="btn btn-primary">
+                            Calcular
+                        </button>
+                        <a href="{% url 'graficadorSimple' %}" class="btn btn-primary">
+                            Ir al graficador
+                        </a>
+                    </form>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">¡Cuidado con el formato de las funciones!</h5>
+                <p class="card-text">Esta página solo recibe funciones escritas de una forma compatible con Python y, concretamente, con la librería Math. Por ejemplo, la función log(sin(x)^2 + 1)-(1/2) debe ser introducida como math.log(math.sin(x)**2 + 1) - (1/2).
+                    Si la página no carga, por favor verifica que la función esté escrita de forma correcta.
+                </p>
+                <h5 class="card-title">Para graficar una función, primero debe ser calculada.</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if resultados_tabla %}
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Resultados de Raíces múltiples</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>N</th>
+                        <th>xn</th>
+                        <th>fn</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in resultados_tabla %}
+                        <tr>
+                            {% for item in row %}
+                                <td>{{ item }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if resultado_final %}
+                <div class="mt-3">
+                    <h6>Resultado Final:</h6>
+                    <p>{{ resultado_final }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+{% endblock content %}

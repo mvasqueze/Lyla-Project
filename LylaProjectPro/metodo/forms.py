@@ -136,3 +136,28 @@ class SecanteForm(forms.Form):
         # Aquí podrías realizar otras validaciones si es necesario
 
         return cleaned_data
+
+#multiple_roots(x0, f, df, df2, tol, niter)
+class MultipleRootsForm(forms.Form):
+    f = forms.CharField(label='Función f(x)')
+    df = forms.CharField(label='Derivada de f(x)')
+    df2 = forms.CharField(label='Segunda derivada de f(x)')
+    x0 = forms.FloatField(label='Valor inicial x0')
+    tol = forms.FloatField(label='Tolerancia')
+    niter = forms.IntegerField(label='Número de iteraciones')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        x0 = cleaned_data.get('x0')
+        tol = cleaned_data.get('tol')
+        niter = cleaned_data.get('niter')
+
+        if tol <= 0:
+            raise forms.ValidationError('La tolerancia debe ser mayor que cero')
+
+        if niter <= 0:
+            raise forms.ValidationError('El número de iteraciones debe ser mayor que cero')
+
+        # Aquí podrías realizar otras validaciones si es necesario
+
+        return cleaned_data
