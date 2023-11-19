@@ -217,16 +217,22 @@ def jacobi(request):
                 ind_lista = [list(map(float, fila.split())) for fila in filasB]
                 ind_numpy = np.array(ind_lista)
                 x_init = np.full((aux, 1), init)
-                resultado_final, resultados_tabla= metodos.jacobi(matriz_numpy, ind_numpy, x_init, tol, n, err_type)
-            
-                print(resultados_tabla)
-                print(resultado_final)
+                resultado_final, resultados_tabla, radio= metodos.jacobi(matriz_numpy, ind_numpy, x_init, tol, n, err_type)
+                print('ESTE ES EL RADIO')
+                print(radio)
+
+                #print(resultados_tabla)
+                #print(resultado_final)
                 resultado_final=str(resultado_final)
+                radio=str(radio)
+                print('ESTE ES EL RADIO 2')
+                print(radio)
                 # Pasar los resultados a la plantilla para mostrar la tabla
                 return render(request, 'jacobi.html', {
                     'form': form,
                     'resultados_tabla': resultados_tabla,
-                    'resultado_final': resultado_final
+                    'resultado_final': resultado_final,
+                    'radio': radio
                 })
             else:
                 form = forms.JacobiForm()

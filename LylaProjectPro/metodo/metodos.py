@@ -764,6 +764,9 @@ def jacobi(a, b, init, tol, n, err_type):
     xn = init
     i = 0
 
+    #Cálculo del radio espectral
+    radio = r_espectral(a, 1)
+
     table.append(i)
     table.append(xn)
     table.append("")
@@ -783,11 +786,7 @@ def jacobi(a, b, init, tol, n, err_type):
 
         res.append([i, xn.tolist(), abs_err])
         table.append("newline")
-    print('ESRO ES XN')
-    print(xn)
-    print('ESRO ES res')
-    print(res)
-    return xn, res
+    return xn, res, radio
 
 
 def next_iter2(a, b, prev_x):
@@ -803,8 +802,6 @@ def next_iter2(a, b, prev_x):
         x[i] = (b[i] - accum) / d
 
     errs = abs(x - prev_x)
-    print('ESTO ES ERRS')
-    print(errs)
     abs_err = np.max(np.abs(errs))
     rel_err = np.max(errs / np.abs(x))
 
@@ -984,3 +981,39 @@ def lagrange(puntos):
     producto = sym.simplify(sym.expand(producto))
     return producto, ls
 
+def r_espectral(matriz_t, tipo):
+    if tipo == 1:
+        T = m_transicionJacobi(matriz_t)
+    else:
+        T = m_transicionGS(matriz_t)
+
+    eigenvalues, _ = np.linalg.eig(T)
+    spectral_radius = np.max(np.abs(eigenvalues))
+    return spectral_radius
+
+import numpy as np
+
+# Función para obtener la matriz de transición en el método de Jacobi
+def m_transicionJacobi(a):
+    size = a.shape[0]
+    diagonal = np.diag(np.diag(a))
+    lower = -np.tril(a, -1)
+    upper = -np.triu(a, 1)
+
+    # Calcular la matriz de transición T = D^(-1) * (L + U)
+    inv_diagonal = np.linalg.inv(diagonal)
+    matrix_T = np.dot(inv_diagonal, lower + upper)
+
+    return matrix_T
+
+def m_transicionGS(a):
+    size = a.shape[0]
+    diagonal = np.diag(np.diag(a))
+    lower = np.tril(a, -1)
+    upper = np.triu(a, 1)
+
+    # Calcular la matriz de transición T = (D - L)^(-1) * U
+    inv_diagonal_minus_lower = np.linalg.inv(diagonal - lower)
+    matrix_T = np.dot(inv_diagonal_minus_lower, upper)
+
+    return matrix_T
