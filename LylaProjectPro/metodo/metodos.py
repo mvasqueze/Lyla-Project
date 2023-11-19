@@ -753,7 +753,7 @@ def next_iter(a, b, prev_x):
     return x, abs_err, rel_err
 
 
-def jacobi(a, b, init, tol, n, err_type="abs"):
+def jacobi(a, b, init, tol, n, err_type):
     table = []
     assert a.shape[0] == a.shape[1]
     assert a.shape[0] == len(b)
@@ -783,6 +783,10 @@ def jacobi(a, b, init, tol, n, err_type="abs"):
 
         res.append([i, xn.tolist(), abs_err])
         table.append("newline")
+    print('ESRO ES XN')
+    print(xn)
+    print('ESRO ES res')
+    print(res)
     return xn, res
 
 
@@ -799,8 +803,10 @@ def next_iter2(a, b, prev_x):
         x[i] = (b[i] - accum) / d
 
     errs = abs(x - prev_x)
-    abs_err = max(errs)
-    rel_err = max(errs / abs(x))
+    print('ESTO ES ERRS')
+    print(errs)
+    abs_err = np.max(np.abs(errs))
+    rel_err = np.max(errs / np.abs(x))
 
     return x, abs_err, rel_err
 

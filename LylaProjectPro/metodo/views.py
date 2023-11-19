@@ -4,6 +4,7 @@ from .models import Metodo
 from django.shortcuts import get_object_or_404
 from . import forms
 from . import metodos 
+import numpy as np
 
 # Create your views here.
 def home(request):
@@ -195,3 +196,43 @@ def r_multiples(request):
         print('AAAA ESTE NO ES EL RESULTADO AAAAA')
 
     return render(request, 'r_multiples.html', {'form': form})
+
+def jacobi(request):
+    if request.method == 'POST':
+        form = forms.JacobiForm(request.POST)
+        if form.is_valid():
+            aux = form.cleaned_data['aux']
+            a = form.cleaned_data['a']
+            b = form.cleaned_data['b']
+            init = form.cleaned_data['init']
+            err_type = form.cleaned_data['err_type']
+            tol = form.cleaned_data['tol']
+            n = form.cleaned_data['n']
+            print('ENTRA AL IF')
+            filasA = a.split(',')
+            filasB = b.split(',')
+            if (len(filasA) == aux) and (len(filasB)==aux):
+                matriz_lista = [list(map(float, fila.split())) for fila in filasA]
+                matriz_numpy = np.array(matriz_lista)
+                ind_lista = [list(map(float, fila.split())) for fila in filasB]
+                ind_numpy = np.array(ind_lista)
+                x_init = np.full((aux, 1), init)
+                resultado_final, resultados_tabla= metodos.jacobi(matriz_numpy, ind_numpy, x_init, tol, n, err_type)
+            
+                print(resultados_tabla)
+                print(resultado_final)
+                resultado_final=str(resultado_final)
+                # Pasar los resultados a la plantilla para mostrar la tabla
+                return render(request, 'jacobi.html', {
+                    'form': form,
+                    'resultados_tabla': resultados_tabla,
+                    'resultado_final': resultado_final
+                })
+            else:
+                form = forms.JacobiForm()
+                print('AAAA ESTE NO ES EL RESULTADO AAAAA 11111')
+    else:
+        form = forms.JacobiForm()
+        print('AAAA ESTE NO ES EL RESULTADO AAAAA 22222')
+    
+    return render(request, 'jacobi.html', {'form': form})
