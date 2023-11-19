@@ -217,7 +217,7 @@ def jacobi(request):
                 ind_lista = [list(map(float, fila.split())) for fila in filasB]
                 ind_numpy = np.array(ind_lista)
                 x_init = np.full((aux, 1), init)
-                resultado_final, resultados_tabla, radio= metodos.jacobi(matriz_numpy, ind_numpy, x_init, tol, n, err_type)
+                resultado_final, resultados_tabla, radio, mensaje= metodos.jacobi(matriz_numpy, ind_numpy, x_init, tol, n, err_type)
                 print('ESTE ES EL RADIO')
                 print(radio)
 
@@ -232,7 +232,8 @@ def jacobi(request):
                     'form': form,
                     'resultados_tabla': resultados_tabla,
                     'resultado_final': resultado_final,
-                    'radio': radio
+                    'radio': radio,
+                    'mensaje': mensaje
                 })
             else:
                 form = forms.JacobiForm()

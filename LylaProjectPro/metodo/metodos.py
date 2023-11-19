@@ -765,7 +765,7 @@ def jacobi(a, b, init, tol, n, err_type):
     i = 0
 
     #Cálculo del radio espectral
-    radio = r_espectral(a, 1)
+    radio, msj = r_espectral(a, 1)
 
     table.append(i)
     table.append(xn)
@@ -786,7 +786,7 @@ def jacobi(a, b, init, tol, n, err_type):
 
         res.append([i, xn.tolist(), abs_err])
         table.append("newline")
-    return xn, res, radio
+    return xn, res, radio, msj
 
 
 def next_iter2(a, b, prev_x):
@@ -989,9 +989,13 @@ def r_espectral(matriz_t, tipo):
 
     eigenvalues, _ = np.linalg.eig(T)
     spectral_radius = np.max(np.abs(eigenvalues))
-    return spectral_radius
 
-import numpy as np
+    if spectral_radius <= 0.89:
+        msj = 'El radio espectral es menor a 1, por ende, el método convergerá.'
+    else:
+        msj = 'El radio espectral es muy cercano a 1, por ende, no se garantiza la convergencia del método.'
+
+    return spectral_radius, msj
 
 # Función para obtener la matriz de transición en el método de Jacobi
 def m_transicionJacobi(a):
