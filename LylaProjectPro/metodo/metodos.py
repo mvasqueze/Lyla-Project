@@ -701,7 +701,7 @@ def cholesky_factorization(a, b):
     return res, regressive_substitution(to_aug(upper_tri, z))
 
 
-def seidel(a, b, init, tol, n, err_type="abs"):
+def seidel(a, b, init, tol, n, err_type):
     table = []
     assert a.shape[0] == a.shape[1]
     assert a.shape[0] == len(b)
@@ -710,6 +710,9 @@ def seidel(a, b, init, tol, n, err_type="abs"):
     error = float("inf")
     xn = init
     i = 0
+
+    #Cálculo del radio espectral
+    radio, msj = r_espectral(a, 2)
 
     table.append(i)
     table.append(xn)
@@ -731,7 +734,7 @@ def seidel(a, b, init, tol, n, err_type="abs"):
 
         res.append([i, xn.tolist(), abs_err])
 
-    return xn, res
+    return xn, res, radio, msj
 
 
 def next_iter(a, b, prev_x):
@@ -987,6 +990,8 @@ def r_espectral(matriz_t, tipo):
     else:
         T = m_transicionGS(matriz_t)
 
+    print('MATRIZ D TRANSICION')
+    print(T)
     eigenvalues, _ = np.linalg.eig(T)
     spectral_radius = np.max(np.abs(eigenvalues))
 
@@ -1017,7 +1022,8 @@ def m_transicionGS(a):
     upper = np.triu(a, 1)
 
     # Calcular la matriz de transición T = (D - L)^(-1) * U
-    inv_diagonal_minus_lower = np.linalg.inv(diagonal - lower)
+    d_l = diagonal - lower
+    inv_diagonal_minus_lower = np.linalg.inv(d_l)
     matrix_T = np.dot(inv_diagonal_minus_lower, upper)
 
     return matrix_T

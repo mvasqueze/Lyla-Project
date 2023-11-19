@@ -196,3 +196,38 @@ class JacobiForm(forms.Form):
         # Aquí podrías realizar otras validaciones si es necesario
 
         return cleaned_data
+    
+#seidel(a, b, init, tol, n, err_type)
+class SeidelForm(forms.Form):
+    OPCIONES_ERROR = [
+        ('abs', 'Error absoluto'),
+        ('rel', 'Error relativo'),
+    ]
+
+    aux = forms.IntegerField(label='Tamaño de la matriz cuadrada')
+    a = forms.CharField(label='Matriz de coeficientes A')
+    b = forms.CharField(label='Términos independientes b')
+    init = forms.FloatField(label='Valor inicial')
+    err_type = forms.ChoiceField(choices=OPCIONES_ERROR, label='Tipo de Error')
+    tol = forms.FloatField(label='Tolerancia')
+    n = forms.IntegerField(label='Número de iteraciones')
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        tol = cleaned_data.get('tol')
+        n = cleaned_data.get('n')
+        aux = cleaned_data.get('aux')
+
+        if tol <= 0:
+            raise forms.ValidationError('La tolerancia debe ser mayor que cero')
+
+        if n <= 0:
+            raise forms.ValidationError('El número de iteraciones debe ser mayor que cero')
+        
+        if (aux <= 1) or (aux > 7):
+            raise forms.ValidationError('La matriz cuadrada nxn debe ser al menos 2x2 y máximo 7x7')
+
+        # Aquí podrías realizar otras validaciones si es necesario
+
+        return cleaned_data

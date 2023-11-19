@@ -243,3 +243,50 @@ def jacobi(request):
         print('AAAA ESTE NO ES EL RESULTADO AAAAA 22222')
     
     return render(request, 'jacobi.html', {'form': form})
+
+def seidel(request):
+    if request.method == 'POST':
+        form = forms.SeidelForm(request.POST)
+        if form.is_valid():
+            aux = form.cleaned_data['aux']
+            a = form.cleaned_data['a']
+            b = form.cleaned_data['b']
+            init = form.cleaned_data['init']
+            err_type = form.cleaned_data['err_type']
+            tol = form.cleaned_data['tol']
+            n = form.cleaned_data['n']
+            print('ENTRA AL IF')
+            filasA = a.split(',')
+            filasB = b.split(',')
+            if (len(filasA) == aux) and (len(filasB)==aux):
+                matriz_lista = [list(map(float, fila.split())) for fila in filasA]
+                matriz_numpy = np.array(matriz_lista)
+                ind_lista = [list(map(float, fila.split())) for fila in filasB]
+                ind_numpy = np.array(ind_lista)
+                x_init = np.full((aux, 1), init)
+                resultado_final, resultados_tabla, radio, mensaje= metodos.seidel(matriz_numpy, ind_numpy, x_init, tol, n, err_type)
+                print('ESTE ES EL RADIO')
+                print(radio)
+
+                #print(resultados_tabla)
+                #print(resultado_final)
+                resultado_final=str(resultado_final)
+                radio=str(radio)
+                print('ESTE ES EL RADIO 2')
+                print(radio)
+                # Pasar los resultados a la plantilla para mostrar la tabla
+                return render(request, 'seidel.html', {
+                    'form': form,
+                    'resultados_tabla': resultados_tabla,
+                    'resultado_final': resultado_final,
+                    'radio': radio,
+                    'mensaje': mensaje
+                })
+            else:
+                form = forms.SeidelForm()
+                print('AAAA ESTE NO ES EL RESULTADO AAAAA 11111')
+    else:
+        form = forms.SeidelForm()
+        print('AAAA ESTE NO ES EL RESULTADO AAAAA 22222')
+    
+    return render(request, 'seidel.html', {'form': form})
