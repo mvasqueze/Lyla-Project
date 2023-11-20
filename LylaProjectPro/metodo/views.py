@@ -290,3 +290,49 @@ def seidel(request):
         print('AAAA ESTE NO ES EL RESULTADO AAAAA 22222')
     
     return render(request, 'seidel.html', {'form': form})
+
+def sor(request):
+    if request.method == 'POST':
+        form = forms.SeidelForm(request.POST)
+        if form.is_valid():
+            aux = form.cleaned_data['aux']
+            a = form.cleaned_data['a']
+            b = form.cleaned_data['b']
+            w = form.cleaned_data['w']
+            init = form.cleaned_data['init']
+            tol = form.cleaned_data['tol']
+            n = form.cleaned_data['n']
+            print('ENTRA AL IF')
+            filasA = a.split(',')
+            filasB = b.split(',')
+            if (len(filasA) == aux) and (len(filasB)==aux):
+                matriz_lista = [list(map(float, fila.split())) for fila in filasA]
+                matriz_numpy = np.array(matriz_lista)
+                ind_lista = [list(map(float, fila.split())) for fila in filasB]
+                ind_numpy = np.array(ind_lista)
+                x_init = np.full((aux, 1), init)
+
+                #sor(A,x0,b,Tol,niter,w)
+                resultados_tabla, radio, mensaje, resultado_final= metodos.sor(matriz_numpy, x_init, ind_numpy, tol, n, w)
+                #return [resultado_tabla, radio, msj, resultado_final]
+
+                #print(resultados_tabla)
+                #print(resultado_final)
+                resultado_final=str(resultado_final)
+                radio=str(radio)
+                # Pasar los resultados a la plantilla para mostrar la tabla
+                return render(request, 'sor.html', {
+                    'form': form,
+                    'resultados_tabla': resultados_tabla,
+                    'resultado_final': resultado_final,
+                    'radio': radio,
+                    'mensaje': mensaje
+                })
+            else:
+                form = forms.SorForm()
+                print('AAAA ESTE NO ES EL RESULTADO AAAAA 11111')
+    else:
+        form = forms.SorForm()
+        print('AAAA ESTE NO ES EL RESULTADO AAAAA 22222')
+    
+    return render(request, 'sor.html', {'form': form})

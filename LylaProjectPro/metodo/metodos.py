@@ -823,6 +823,7 @@ def sor(A,x0,b,Tol,niter,w):
     resultado.append([c,x0,error])
     while error>Tol and c<niter:
         T = np.dot(np.linalg.inv(D-(w*L)),((1-w)*D+(w*U)))
+        radio, msj = r_espectral(T, 3)
         C = w * np.dot(np.linalg.inv(D-w*L),b)
         x1=np.dot(T,x0)+C
         E.append(np.linalg.norm(x1-x0))
@@ -833,10 +834,12 @@ def sor(A,x0,b,Tol,niter,w):
         if error < Tol:
             s=x0
             n=c
-            return [resultado, "Solucion al sistema con una tolerancia de "+str(Tol)+" es "+str(s)]
+            resultado_final="Solucion al sistema con una tolerancia de "+str(Tol)+" es "+str(s)
+            return [resultado, radio, msj, resultado_final]
     s=x0
     n=c
-    return [resultado, "Fracasó"+str(niter)]
+    resultado_final="Fracasó"+str(niter)
+    return [resultado, radio, msj, resultado_final]
 
 
 def vandermonde_method(x,y):
@@ -987,8 +990,10 @@ def lagrange(puntos):
 def r_espectral(matriz_t, tipo):
     if tipo == 1:
         T = m_transicionJacobi(matriz_t)
-    else:
+    elif 2:
         T = m_transicionGS(matriz_t)
+    else:
+        T = matriz_t
 
     print('MATRIZ D TRANSICION')
     print(T)

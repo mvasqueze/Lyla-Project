@@ -11,5 +11,5 @@ urlpatterns = [
     path('r_multiples', views.r_multiples, name='r_multiples'),
     path('jacobi', views.jacobi, name='jacobi'),
     path('seidel', views.seidel, name='seidel'),
-    #path('sor', views.sor, name='sor'),
+    path('sor', views.sor, name='sor'),
 ]
