@@ -1018,8 +1018,8 @@ def m_transicionJacobi(a):
 def m_transicionGS(a):
     size = a.shape[0]
     diagonal = np.diag(np.diag(a))
-    lower = np.tril(a, -1)
-    upper = np.triu(a, 1)
+    lower = -np.tril(a, -1)
+    upper = -np.triu(a, 1)
 
     # Calcular la matriz de transición T = (D - L)^(-1) * U
     d_l = diagonal - lower
