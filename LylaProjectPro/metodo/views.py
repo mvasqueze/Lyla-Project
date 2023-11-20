@@ -293,12 +293,14 @@ def seidel(request):
 
 def sor(request):
     if request.method == 'POST':
-        form = forms.SeidelForm(request.POST)
+        form = forms.SorForm(request.POST)
         if form.is_valid():
             aux = form.cleaned_data['aux']
             a = form.cleaned_data['a']
             b = form.cleaned_data['b']
             w = form.cleaned_data['w']
+            print('ESTO ES W 2')
+            print(w)
             init = form.cleaned_data['init']
             tol = form.cleaned_data['tol']
             n = form.cleaned_data['n']

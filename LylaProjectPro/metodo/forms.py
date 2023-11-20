@@ -243,6 +243,8 @@ class SorForm(forms.Form):
     tol = forms.FloatField(label='Tolerancia')
     n = forms.IntegerField(label='Número de iteraciones')
 
+    print('ESTOS ES A 1')
+    print(a)
 
     def clean(self):
         cleaned_data = super().clean()

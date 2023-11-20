@@ -817,12 +817,47 @@ def sor(A,x0,b,Tol,niter,w):
     resultado = []
     error=Tol+1
     E.append(error)
-    D = np.diagonal(A) * np.identity(len(x0))
+    print('ESTOS ES A')
+    print(A)
+    D = np.diag(np.diag(A))
+    print('esto es D sin diag:')
+    print(D)
     L = -np.tril(A,-1)
-    U = -np.triu(A,+1)
+    U = -np.triu(A, 1)
     resultado.append([c,x0,error])
+    print('L')
+    print(L)
+    print('U')
+    print(U)
+    print('w')
+    print(w)
     while error>Tol and c<niter:
-        T = np.dot(np.linalg.inv(D-(w*L)),((1-w)*D+(w*U)))
+        term11 = w*L
+        print('Term 11')
+        print(term11)
+        term12 = D-term11
+        print('Term 12')
+        print(term12)
+        term1I = np.linalg.inv(term12)
+        print('Term 1I')
+        print(term1I)
+        term1 = np.linalg.inv(D-(w*L))
+        print('Term 1')
+        print(term1)
+        term21 = (1-w)*D
+        print('Term 21')
+        print(term21)
+        term22 = w*U
+        print('Term 22')
+        print(term22)
+        term2= term21+term22
+        print('Term 2')
+        print(term2)
+        T = term1 @ term2
+        print('T')
+        print(T)
+        #T = np.dot(np.linalg.inv(D-(w*L)),((1-w)*D+(w*U)))
+        #T = np.linalg.inv(D - w * L) @ ((1 - w) * D + w * U)
         radio, msj = r_espectral(T, 3)
         C = w * np.dot(np.linalg.inv(D-w*L),b)
         x1=np.dot(T,x0)+C
@@ -988,12 +1023,21 @@ def lagrange(puntos):
     return producto, ls
 
 def r_espectral(matriz_t, tipo):
+    
     if tipo == 1:
         T = m_transicionJacobi(matriz_t)
-    elif 2:
+    elif tipo == 2:
         T = m_transicionGS(matriz_t)
     else:
-        T = matriz_t
+        eigenvalues, _ = np.linalg.eig(matriz_t)
+        spectral_radius = np.max(np.abs(eigenvalues))
+
+        if spectral_radius <= 0.89:
+            msj = 'El radio espectral es menor a 1, por ende, el método convergerá.'
+        else:
+            msj = 'El radio espectral es muy cercano a 1, por ende, no se garantiza la convergencia del método.'
+
+        return spectral_radius, msj
 
     print('MATRIZ D TRANSICION')
     print(T)
