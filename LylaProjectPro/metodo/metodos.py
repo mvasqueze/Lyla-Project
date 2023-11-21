@@ -48,12 +48,15 @@ def biseccion(f, xi, xs, tol, niter):
     a = []
     b= []
     c=0
+    # Se evalúa la función en el límite inferior (Xi) y el superior (Xs) y se guardan los valores
     x=Xi
     fi=eval(Fun)
     x=Xs
     fs=eval(Fun)
     Error = 0
     res2= 'nan'
+
+    # Se verifica si alguna de las funciones evaluadas da cero, es decir, si Xi o Xs es raíz.
     if fi==0:
         s=Xi
         E=0
@@ -63,7 +66,10 @@ def biseccion(f, xi, xs, tol, niter):
         E=0
         res2 = (Xs, "es raiz de f(x)")
     elif fs*fi<0:
+        # Se verifica que haya un cambio de signo
         c=0
+
+        #Si lo hay, se encuentra el punto medio entre los límites Xi y Xs
         Xm=(Xi+Xs)/2
         x=Xm
         fe=eval(Fun)
@@ -71,17 +77,24 @@ def biseccion(f, xi, xs, tol, niter):
         N.append(c)
         E.append(100)
         xn.append(x)
+
+        # Si el punto medio NO es raíz, se continúa con el ciclo.
         while E[c]>Tol and fe!=0 and c<Niter:
             a.append(Xi)
             b.append(Xs)
+            # Si entre f(Xi) y f(Xm) (punto medio) hay un cambio de signo, se asume que en ese intervalo está la raíz y Xm pasa a 
+            # ser el límite superior de un intervalo
             if fi*fe<0:
                 Xs=Xm
                 x=Xs
                 fs=eval(Fun)
             else:
+                # Si entre f(Xi) y f(Xm) no hay un cambio de signo, se asume que la raíz está en el intervalo [Xm, Xs], reemplazando Xi con Xm.
                 Xi=Xm
                 x=Xi
                 fs=eval(Fun)
+            
+            #Se calcula el punto medio nuevamente y se almacena en X para la tabla, así como el cáculo del error y el número de la iteración.
             Xa=Xm
             Xm=(Xi+Xs)/2
             x=Xm
@@ -120,11 +133,16 @@ def regla_falsa(f,t_error,xinf,xsup,tol,niter):
     print(fxinf)
     print(fxsup)
     resultados = [] #matriz para guardar resultados
+
+    # Se verifica si alguno de los límites del intervalo es raíz
     if fxinf==0:
         res2 =  (xinf," es raiz")
     elif fxsup==0:
         res2 =  (xsup," es raiz")
     elif fxinf*fxsup<0:
+        #Si ninguno de los extremos es raíz, se verifica el cambio de signo
+
+        #Se calcula el punto medio con la fórumla de la regla falsa y se almacena la función evaluada en ese punto, el error y el niter.
         xm = xinf-((fxinf*(xsup-xinf))/float(fxsup-fxinf))
         x=xm
         fxm=eval(f)
@@ -133,15 +151,19 @@ def regla_falsa(f,t_error,xinf,xsup,tol,niter):
         resultados.append([contador,xinf,xsup,xm,fxm,'nan'])
         while(fxm!=0 and error>tol and contador<niter):
             if fxinf*fxm<0:
+                #Si hay un camnbio de signo entre el f(Xm) y f(xi), Xs pasa a ser el punto medio
                 xsup=xm
                 fxsup=fxm
             else:
                 xinf=xm
                 fxinf=fxm
+            
+            #Se calcula de nuevo Xm y f(Xm) para esta iteración
             temp=xm
             xm = xinf-((fxinf*(xsup-xinf))/float(fxsup-fxinf))
             x=xm
             fxm=eval(f)
+            #Dependiendo del tipo de error (relativo o absoluto) se calcula y se guarda en la tabla
             if t_error == 1:
                 error = abs(xm - temp)
             else:
@@ -180,9 +202,14 @@ def punto_fijo(f, g, x0, tol, niter):
     xn.append(x)
     E.append(Error)
     N.append(c)
+
+    #Si la función evaluada en X0 es diferente de cero...
     while Error > Tol and f != 0 and c < Niter:
+        #Se calcula x evaluando la función auxiliar con el x actual
         x = eval(g)
         gx.append(x)
+
+        #Se evalúa la función original con el nuevo x calculado a partir de G
         fe = eval(Fun)
         fn.append(fe)
         xn.append(x)
@@ -234,6 +261,7 @@ def newton_raphson(f, df, x0, tol, niter):
     E.append(Error)
     N.append(c)
     while Error>Tol and f!=0 and derivada!=0  and c<Niter:
+        # Se recalcula X según la fórmula de Newthon-Rhapson y se reevalúa en f y f' hasta que f sea igual a cero o cumpla las demás condiciones de parada
         x=x-f/derivada
         f = eval(Fun)
         derivada = eval(df)
@@ -275,6 +303,7 @@ def secante(x0, x1, f, tol, niter):
     xn = []
     E = []
     N = []
+    #Se evalúa la función en x0 y x1
     x = X0
     f = eval(Fun)
     x = X1
@@ -291,6 +320,7 @@ def secante(x0, x1, f, tol, niter):
     c = c + 1
     N.append(c)
     while Error > Tol and f != 0 and c < Niter:
+        # Se calcula X con el método de la secante y se evalúa nuevamente en f 
         x = xn[c] - ((fn[c] * (xn[c] - xn[c - 1])) / (fn[c] - fn[c - 1]))
         f = eval(Fun)
         fn.append(f)
@@ -355,6 +385,7 @@ def multiple_roots(x0, f, df, df2, tol, niter):
     N.append(c)
 
     while Error > Tol and derivada != 0 and c < Niter:
+        # cálculo de x y los términos necesarios para calcular X desde el método de Newthon
         arriba = (f * derivada)
         abajo = ((derivada) ** 2) - ((f) * (derivada2))
         x = x - (arriba / abajo)
@@ -876,7 +907,7 @@ def sor(A,x0,b,Tol,niter,w):
     resultado_final="Fracasó"+str(niter)
     return [resultado, radio, msj, resultado_final]
 
-
+# Recibe dos listas de puntos
 def vandermonde_method(x,y):
         matrix = []
         coeficientes = []

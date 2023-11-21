@@ -29,8 +29,8 @@ class BiseccionForm(forms.Form):
     
 class ReglaFalsaForm(forms.Form):
     OPCIONES_ERROR = [
-        ('1', 'Cifras significativas'),
-        ('2', 'Decimales correctos'),
+        ('1', 'Error absoluto'),
+        ('2', 'Error relativo'),
     ]
 
     f = forms.CharField(label='Función f(x)')

@@ -12,4 +12,9 @@ urlpatterns = [
     path('jacobi', views.jacobi, name='jacobi'),
     path('seidel', views.seidel, name='seidel'),
     path('sor', views.sor, name='sor'),
+    #path('vander', views.vander, name='vander'),
+    #path('newton_int', views.newton_int, name='newton_int'),
+    #path('lagrange', views.lagrange, name='lagrange'),
+    #path('spline_l', views.spline_l, name='spline_l'),
+    #path('spline_c', views.spline_c, name='spline_c'),
 ]
